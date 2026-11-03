@@ -1,32 +1,46 @@
 # Porto Sorvetes — Cardápio Online
 
-Site estático para GitHub Pages com cardápio, filtros, escolha de sabores, carrinho salvo no navegador e geração automática de mensagem de pedido para WhatsApp.
+Cardápio estático e responsivo para [GitHub Pages](https://k410sh4.github.io/App/), com 20 produtos, busca, filtros, personalização, carrinho salvo no navegador e montagem de pedidos para WhatsApp.
 
-## Publicação no GitHub Pages
+## Funcionalidades
 
-1. Abra **Settings → Pages** no repositório.
-2. Em **Build and deployment**, selecione **Deploy from a branch**.
-3. Escolha a branch **main**, a pasta **/(root)** e salve.
-4. O endereço ficará no formato `https://k410sh4.github.io/App/` após a publicação pelo GitHub.
+- **20 produtos** transcritos da fotografia do cardápio, com preços em reais.
+- **45 sabores** de milk-shake tradicional, **14 especiais** e **3 Fini**.
+- **20 ilustrações SVG originais**, uma por item, leves e sem dependências externas.
+- Escolha de recipientes e recheios para os produtos aplicáveis.
+- Carrinho com quantidades, adicionais, observações, retirada ou consulta de entrega.
+- Cálculo do subtotal e composição automática de texto para WhatsApp, com confirmação pelo cliente.
+- Validação do preço ao restaurar o carrinho; o armazenamento do navegador não é fonte confiável para preços.
+- UX mobile com áreas de toque ampliadas, indicação de foco, suporte a movimento reduzido e fallback sem JavaScript.
 
-## Configuração indispensável do WhatsApp
+## Instalação e publicação
 
-Abra **config.js** e substitua `whatsapp: ""` pelo número REAL do WhatsApp da loja, em formato internacional **55 + DDD + número**. Exemplo de formato (fictício): `5535999999999`. Não inclua sinal +, espaços nem traços.
+O repositório publica a branch **main** na pasta **/(root)** pelo GitHub Pages. Confira o resultado em **Actions → pages build and deployment**.
 
-Sem essa configuração, o botão de envio fica desativado, evitando pedidos para contatos errados. O botão **Copiar texto do pedido** continua disponível.
+## WhatsApp comercial
 
-## Como funciona
+Abra [config.js](config.js) e substitua `whatsapp: ""` por **55 + DDD + telefone comercial**, apenas dígitos, sem sinal de +. Exemplo de formato **fictício**: `5535999999999`.
 
-O cliente escolhe produtos, sabores e quantidades, preenche seu nome e opção de retirada ou consulta de entrega e toca em **Enviar pedido pelo WhatsApp**. O site abre o WhatsApp com uma mensagem montada automaticamente. O cliente precisa confirmar o envio. **Este site não envia mensagens sem ação do cliente e não é um bot autônomo do WhatsApp.** Automação de atendimento e notificações requer integração autorizada com a WhatsApp Business Platform e infraestrutura adicional.
+Até configurar o número real, o botão de WhatsApp permanece desativado e é possível copiar o pedido. O site **não envia mensagens automaticamente**: abre o WhatsApp com a mensagem pré-preenchida, e o cliente confirma o envio. A automação de atendimento, cobranças e confirmação de pedidos exige infraestrutura adicional e integração autorizada.
 
-## Origem dos dados e limites
+## Estrutura
 
-Os produtos, sabores e preços foram transcritos da fotografia do cardápio fornecida. Os sabores de sorvete de massa e regras de entrega/pagamento não aparecem no material e **não foram inventados**. O responsável deve confirmar preços, produtos, disponibilidade e taxa de entrega antes de publicar. A foto original não é necessária para o funcionamento do site.
+| Caminho | Função |
+| --- | --- |
+| `index.html` | Semântica, cabeçalho, catálogo, modal, carrinho e finalização |
+| `assets/css/styles.css` | Design System, responsividade e acessibilidade |
+| `assets/js/app.js` | Produtos, filtros, estado, carrinho e mensagem do pedido |
+| `assets/products/*.svg` | Ilustrações vetoriais independentes por produto |
+| `config.js` | Número comercial público, **nunca** tokens ou chaves secretas |
+| `scripts/check-site.mjs` | Testes estáticos de catálogo e recursos |
+| `.github/workflows/quality.yml` | CI automático de JavaScript e SVG/XML |
 
-## Projeto
+## Testes
 
-- `index.html`: estilos, interface, catálogo, carrinho e lógica de pedidos (sem dependências externas).
-- `config.js`: configuração pública do WhatsApp comercial (não armazene tokens ou dados secretos aqui).
-- `.nojekyll`: publicação de arquivos estáticos sem processamento Jekyll.
+O workflow **Qualidade do cardápio** valida sintaxe de JavaScript, arquivos vinculados, número e unicidade de produtos, presença de imagens e XML bem formado. Estes **testes estáticos não substituem** validação de teclado, leitor de tela, desempenho, zoom e responsividade em navegador real.
 
-Os dados do carrinho são mantidos apenas em localStorage do dispositivo. Não há backend, cobrança online ou armazenamento de pedidos em servidor.
+## Observações comerciais e fidelidade
+
+Os preços e sabores provêm da foto enviada; é necessário que a loja confira o cardápio antes de divulgação comercial. **Imagens são ilustrativas**, não representam fotografias oficiais dos produtos. Taxas, disponibilidade, retirada e entrega precisam ser confirmadas com o estabelecimento.
+
+O carrinho é salvo localmente; não existe backend ou pagamento online.
